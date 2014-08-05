@@ -15,3 +15,13 @@ When you open the app's current Alpha on your phone or directly from the [web](h
 If every Israeli would know how to get to a near bomb shelter every time there's a CODE RED ALARM, lifes could be saved.
 
 Please spread the work and share this app on Social Networks.
+
+
+* @thanks:
+
+Shaiel Yitzchak, director of [Hackercamp](http://thelearningworks.org)
+Alex Zak, CTO of KiddyUp
+Michael Elgavi
+Yair Rabinowitz
+
+
