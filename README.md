@@ -17,11 +17,11 @@ If every Israeli would know how to get to a near bomb shelter every time there's
 Please spread the work and share this app on Social Networks.
 
 
-* @thanks:
+@thanks:
 
-Shaiel Yitzchak, director of [Hackercamp](http://thelearningworks.org)
-Alex Zak, CTO of KiddyUp
-Michael Elgavi
-Yair Rabinowitz
+* Shaiel Yitzchak, director of [Hackercamp](http://thelearningworks.org)
+* Alex Zak, CTO of KiddyUp
+* Michael Elgavi 
+* Yair Rabinowitz
 
 
