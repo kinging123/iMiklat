@@ -72,8 +72,10 @@ $(function(){
             type: "get",
             dataType: "jsonp",
             data: {"city":cityPass, "nbrhd": nbrhdPass},
-            complete: function(json_locs, status){
-                json_locs = json_locs.responseText;
+            crossDomain: true,
+            complete: function(json_locs, status, third){
+                console.log(json_locs.responseJSON);
+                json_locs = json_locs.responseJSON;
                 
                 json_locs = $.parseJSON(json_locs);
 
