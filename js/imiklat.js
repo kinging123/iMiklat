@@ -22,7 +22,8 @@ function centerMap (latitude, longitude, Markers) {
     // alert("hello");
     // alert(position);
     // alert("the function was called");
-    $("#map").goMap({
+    clearInterval(clusterInterval);
+    $("#map").removeData().goMap({
         latitude: 32.0853,
         longitude: 34.781768,
         zoom: 12,
@@ -54,24 +55,68 @@ position = {
 }
 var json_locs, Markers = new Array, 
     otherText = "אחר",
+    allText = "הכל",
     defaultCity = "ירושלים",
-    defaultNbrhd = "בקעה";
+    defaultNbrhd = "בקעה",
+    clusterInterval = 0;
 
+
+function updateNbrhds() {
+    $.ajax({
+        url: "http://projects.karasik.org/imiklat/functions/getNbrhds.php",
+        type: "get",
+        dataType: "jsonp",
+        data: {"city":getValue("city")},
+        crossDomain: true,
+        complete: function(json_nbrhds, status){
+            // alert("AJAX returned");
+            console.log(json_nbrhds.responseJSON);
+            // alert("status: \n" +status);
+            json_nbrhds = json_nbrhds.responseJSON;
+            
+            json_nbrhds = $.parseJSON(json_nbrhds);
+            $("select#nbrhd").empty();
+            $.each(json_nbrhds, function(index, val) {
+                $("select#nbrhd").append('<option value="' + val + '">' + val + '</option>');
+            });
+
+            $("select#nbrhd").append('<option value="' + otherText + '">' + otherText + '</option>');
+
+            selected = ($("select#city").val() == allText || $("select#city").val() == otherText)?" selected ":"";
+            $("select#nbrhd").append('<option value="' + allText + '" '+selected+'>' + allText + '</option>');
+
+        }
+    });
+}
+
+
+function getValue (type) {
+    value = $("select#"+type).val();
+    if(value.length > 2 && value != allText && value != otherText) {
+        return value;
+    } else if(value == otherText) {
+        return $("#inputfor"+type).val();
+    } else {
+        return (type == "city")?defaultCity:defaultNbrhd;
+    }
+}
 $(function(){
+
+    updateNbrhds();
+
+
     // alert("Page loaded");
     $("#send").click(function(event) {
         // alert("#send button was clicked.");
-        cityPass = $("select#city").val();
+        cityPass = getValue("city");
         // alert("city was readden from inputs.");
-        nbrhdPass = $("select#nbrhd").val();
+        nbrhdPass = getValue("nbrhd");
         // alert("nbrhd was readden from inputs.");
 
-        if(cityPass == otherText)cityPass = $("#inputforcity").val();
-        if(nbrhdPass == otherText)nbrhdPass = $("#inputfornbrhd").val();
+        
 
 
-        if(cityPass.length < 3)cityPass=defaultCity;
-        if(nbrhdPass.length < 3)nbrhdPass=defaultNbrhd;
+        
 
         // alert("starting AJAX.");
         $.ajax({
@@ -103,7 +148,7 @@ $(function(){
                 var markers = [];
 
 
-                setInterval(function(){
+                clusterInterval = setInterval(function(){
                     for (var i in $.goMap.markers) {
                         var temp = $($.goMap.mapId).data($.goMap.markers[i]);
                         markers.push(temp);
@@ -129,11 +174,16 @@ $(function(){
         else $("#inputfor"+id).hide();
 
         console.log(id, $(this).val());
-        if($(this).val() == "הכל" && id == "city")$("select#nbrhd").attr('disabled', 'disabled').val("הכל");
-        else $("select#nbrhd").removeAttr('disabled');
+        
     });
 
     $(".inputfors").hide();
+
+    $("select#city").change(function(event) {
+        updateNbrhds();
+        if($(this).val() == allText || $(this).val() == otherText)$("select#nbrhd").attr('disabled', 'disabled').val(allText);
+        else $("select#nbrhd").removeAttr('disabled');
+    });
 });
 
 
