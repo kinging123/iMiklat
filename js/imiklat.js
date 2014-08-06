@@ -117,7 +117,7 @@ $(function(){
 
                 alert("done.");
             }
-        alert("AJAX was sent.");
+        // alert("AJAX was sent.");
         });
         
     });
